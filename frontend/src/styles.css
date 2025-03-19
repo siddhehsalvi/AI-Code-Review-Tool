@@ -1,0 +1,62 @@
+body {
+    background-color: #121212;
+    color: white;
+    font-family: "Arial", sans-serif;
+    overflow: hidden;
+    
+  }
+
+  /* .navbar {
+    background-color: #1e1e1e;
+    padding: 15px;
+  } 
+  
+  .navbar-brand {
+    font-size: 24px;
+    font-weight: bold;
+    color: #00060f !important;
+  }*/
+  
+  /* Main Container */
+  .main-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 90vh;
+  }
+  
+  /* Code Editor Card */
+  .editor-card {
+    width: 80%;
+    max-width: 900px;
+    background: #1e1e1e;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+  }
+  
+  /* Dropdown Styling */
+  select {
+    background: #2c2c2c;
+    color: white;
+    border: none;
+    padding: 8px;
+    border-radius: 5px;
+  }
+  
+  /* Button Styling */
+  .review-btn {
+    background-color: #0d6efd;
+    color: white;
+    border: none;
+    padding: 10px;
+    width: 100%;
+    font-weight: bold;
+    transition: all 0.3s;
+  }
+  
+  .review-btn:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+  }
+  
