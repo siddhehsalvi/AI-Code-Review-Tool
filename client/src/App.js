@@ -121,13 +121,18 @@ function App() {
     duplications: 0,
     coverage: 0
   });
+  const [languageMismatch, setLanguageMismatch] = useState(null);
 
   const handleCodeChange = (value) => {
     setCode(value);
+    // Clear any previous language mismatch error when code changes
+    setLanguageMismatch(null);
   };
 
   const handleLanguageChange = (e) => {
     setLanguage(e.target.value);
+    // Clear any previous language mismatch error when language changes
+    setLanguageMismatch(null);
   };
 
   const handleSubmit = async (e) => {
@@ -135,6 +140,7 @@ function App() {
     setLoading(true);
     setError('');
     setReview(null);
+    setLanguageMismatch(null);
 
     try {
       console.log('Submitting code for review...');
@@ -186,21 +192,21 @@ function App() {
       console.error('Error in handleSubmit:', err);
       
       // Create a more detailed error message
-      let errorMsg = '';
+      let errorMsg = 'Failed to get code review. Please try again.';
       
       if (err.connectionError) {
         errorMsg = `Connection error: Could not connect to server at ${err.serverUrl}. Please check if the server is running.`;
       } else if (err.status) {
-        errorMsg = `Server error (${err.status}): ${err.statusText || 'Unknown error'}`;
-        if (err.data?.error) {
-          errorMsg += ` - ${err.data.error}`;
+        if (err.data?.error === 'Language mismatch') {
+          // Handle language mismatch error specifically
+          setLanguageMismatch(err.data.message);
+          errorMsg = ''; // Don't set general error for language mismatch
+        } else {
+          errorMsg = `Server error (${err.status}): ${err.statusText || 'Unknown error'}`;
+          if (err.data?.error) {
+            errorMsg += ` - ${err.data.error}`;
+          }
         }
-      } else if (err.message) {
-        // For other errors, show the message
-        errorMsg = `Error: ${err.message}`;
-      } else {
-        // Fallback error message
-        errorMsg = 'Failed to get code review. Please try again.';
       }
       
       setError(errorMsg);
@@ -245,7 +251,7 @@ function App() {
           <div className="metric-item">
             <div className="metric-header">
               <div className="metric-icon smell"><FontAwesomeIcon icon={faWrench} /></div>
-              <div className="metric-title">Code Smells</div>
+              <div className="metric-title">Code Quality Issues</div>
             </div>
             <div className={`metric-value smell rating-${getCodeSmellRating(metrics.codeSmells)}`}>{metrics.codeSmells}</div>
             <div className="metric-rating">Maintainability: {getCodeSmellRating(metrics.codeSmells)}</div>
@@ -379,7 +385,15 @@ function App() {
         </div>
 
         <div className="content-area">
-          {/* Regular error alert */}
+          {/* Language mismatch alert */}
+          {languageMismatch && (
+            <div className="alert alert-warning language-mismatch">
+              <FontAwesomeIcon icon={faExclamationTriangle} className="me-2" />
+              {languageMismatch}
+            </div>
+          )}
+          
+          {/* Regular error alert - only shown for non-language errors */}
           {error && error.trim() !== '' && (
             <div className="error-alert">
               <FontAwesomeIcon icon={faExclamationTriangle} />

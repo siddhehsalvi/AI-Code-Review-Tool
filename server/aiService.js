@@ -152,6 +152,23 @@ class AIService {
     return 'javascript'; // Default
   }
   
+  /**
+   * Validates if the code matches the selected language
+   * @param {string} code - The code to analyze
+   * @param {string} selectedLanguage - The language selected by the user
+   * @returns {Object} - Validation result with isValid flag and detected language
+   */
+  validateLanguage(code, selectedLanguage) {
+    const detectedLanguage = this.detectLanguage(code);
+    const isValid = detectedLanguage === selectedLanguage;
+    
+    return {
+      isValid,
+      detectedLanguage,
+      selectedLanguage
+    };
+  }
+  
   addJavaScriptSuggestions(code, lines, suggestions) {
     // Check for var usage
     const varLines = lines.map((line, index) => 

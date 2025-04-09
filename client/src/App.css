@@ -227,6 +227,14 @@ body {
   box-shadow: none;
 }
 
+/* Language mismatch styling in the button */
+.review-button:disabled.language-mismatch {
+  background-color: var(--warning-color);
+  border-color: #d97706;
+  color: #1e293b;
+  opacity: 1;
+}
+
 /* Content Area */
 .content-area {
   flex: 1;
@@ -723,4 +731,15 @@ body {
 .language-suggestion {
   font-weight: bold;
   margin-top: 10px;
+}
+
+/* Language Mismatch Alert */
+.language-mismatch {
+  margin-bottom: 15px;
+  border-left: 4px solid var(--warning-color);
+  font-weight: 500;
+}
+
+.language-mismatch .fa-exclamation-triangle {
+  color: var(--warning-color);
 } 

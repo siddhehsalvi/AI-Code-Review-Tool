@@ -38,11 +38,21 @@ app.post('/api/review', validateApiKey, async (req, res) => {
       return res.status(400).json({ error: 'Code is required' });
     }
     
-    // Language validation disabled - skip language validation checks
+    // Validate language if provided
     if (language) {
       console.log(`Language specified by user: ${language}`);
-      // We're using the specified language regardless of the actual code language
-      console.log(`Using specified language: ${language} (language validation disabled)`);
+      const validation = aiService.validateLanguage(code, language);
+      
+      if (!validation.isValid) {
+        console.log(`Language mismatch: Selected ${language}, detected ${validation.detectedLanguage}`);
+        return res.status(400).json({ 
+          error: 'Language mismatch', 
+          message: `Language mismatch error: The code appears to be ${validation.detectedLanguage} but you selected ${validation.selectedLanguage}. Please select the correct language.`,
+          validation
+        });
+      }
+      
+      console.log(`Language validation successful: ${language}`);
     }
     
     console.log('Calling AI service to analyze code...');
