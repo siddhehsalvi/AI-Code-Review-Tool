@@ -137,7 +137,9 @@ function App() {
     setReview(null);
 
     try {
-      const reviewResult = await codeReviewService.submitCode(code);
+      console.log('Submitting code for review...');
+      console.log('Selected language:', language);
+      const reviewResult = await codeReviewService.submitCode(code, language);
       
       // Process the review response to match our UI structure
       const processedReview = {
@@ -181,8 +183,27 @@ function App() {
         });
       }
     } catch (err) {
-      setError('Failed to get code review. Please try again.');
-      console.error(err);
+      console.error('Error in handleSubmit:', err);
+      
+      // Create a more detailed error message
+      let errorMsg = '';
+      
+      if (err.connectionError) {
+        errorMsg = `Connection error: Could not connect to server at ${err.serverUrl}. Please check if the server is running.`;
+      } else if (err.status) {
+        errorMsg = `Server error (${err.status}): ${err.statusText || 'Unknown error'}`;
+        if (err.data?.error) {
+          errorMsg += ` - ${err.data.error}`;
+        }
+      } else if (err.message) {
+        // For other errors, show the message
+        errorMsg = `Error: ${err.message}`;
+      } else {
+        // Fallback error message
+        errorMsg = 'Failed to get code review. Please try again.';
+      }
+      
+      setError(errorMsg);
     } finally {
       setLoading(false);
     }
@@ -358,6 +379,16 @@ function App() {
         </div>
 
         <div className="content-area">
+          {/* Regular error alert */}
+          {error && error.trim() !== '' && (
+            <div className="error-alert">
+              <FontAwesomeIcon icon={faExclamationTriangle} />
+              <div className="error-message">
+                {error}
+              </div>
+            </div>
+          )}
+          
           <div className="tabs">
             <Button 
               className={`tab ${activeTab === 'editor' ? 'active' : ''}`}
@@ -423,8 +454,6 @@ function App() {
           </div>
         </div>
       </div>
-      
-      {error && <div className="error-message">{error}</div>}
     </div>
   );
 }

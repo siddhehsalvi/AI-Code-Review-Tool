@@ -681,4 +681,46 @@ body {
 
 .formatted-review .severity-low {
   color: #6bff6b;
+}
+
+/* Error Alert */
+.error-alert {
+  background-color: var(--danger-color);
+  color: white;
+  padding: 12px 20px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  font-weight: 500;
+  box-shadow: 0 4px 6px rgba(239, 68, 68, 0.2);
+}
+
+.error-alert.language-mismatch {
+  background-color: var(--warning-color);
+  color: #1e293b;
+  box-shadow: 0 4px 6px rgba(245, 158, 11, 0.2);
+  border: 1px solid #d97706;
+  position: relative;
+  padding: 16px 20px;
+  font-size: 1.05rem;
+}
+
+.error-alert .fa-exclamation-triangle {
+  font-size: 1.5rem;
+}
+
+.error-alert.language-mismatch .fa-exclamation-triangle {
+  color: #d97706;
+}
+
+.error-message {
+  flex: 1;
+}
+
+/* Language Mismatch Help */
+.language-suggestion {
+  font-weight: bold;
+  margin-top: 10px;
 } 

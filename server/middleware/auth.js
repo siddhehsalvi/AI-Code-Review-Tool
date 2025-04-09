@@ -8,8 +8,9 @@
  * @param {Function} next - Express next middleware function
  */
 const validateApiKey = (req, res, next) => {
-  // For development purposes, disable API key validation
-  if (process.env.NODE_ENV === 'development') {
+  // Skip validation unless explicitly in production
+  if (process.env.NODE_ENV !== 'production') {
+    console.log('API key validation bypassed in development/test mode');
     return next();
   }
   
