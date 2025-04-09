@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './App.css';
 import CodeDisplay from './components/CodeDisplay';
 import { codeReviewService } from './services/api';
@@ -6,7 +6,7 @@ import Editor from '@monaco-editor/react';
 // eslint-disable-next-line no-unused-vars
 import { Container, Row, Col, Button, Form, Spinner, Navbar, Nav, Card } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCode, faServer, faBolt, faShieldAlt, faVial, faWrench, faRobot, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
+import { faCode, faBolt, faShieldAlt, faVial, faWrench, faRobot, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 
 // Sample code for each supported language
 const sampleCodeByLanguage = {
@@ -113,7 +113,6 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [language, setLanguage] = useState('javascript');
-  const [serverStatus, setServerStatus] = useState('checking');
   const [activeTab, setActiveTab] = useState('editor');
   const [metrics, setMetrics] = useState({
     bugs: 0,
@@ -122,21 +121,6 @@ function App() {
     duplications: 0,
     coverage: 0
   });
-
-  // Check server health on component mount
-  useEffect(() => {
-    const checkServerHealth = async () => {
-      try {
-        await codeReviewService.checkHealth();
-        setServerStatus('online');
-      } catch (err) {
-        setServerStatus('offline');
-        setError('Server is unavailable. Please try again later.');
-      }
-    };
-    
-    checkServerHealth();
-  }, []);
 
   const handleCodeChange = (value) => {
     setCode(value);
@@ -315,21 +299,10 @@ function App() {
       <Navbar className="app-header">
         <div className="logo">
           <FontAwesomeIcon icon={faRobot} className="logo-icon" />
-          <h1>AI Code Review Tool</h1>
-        </div>
-        <div className="server-status-container">
-          {serverStatus === 'online' && (
-            <div className="server-status online">
-              <FontAwesomeIcon icon={faServer} className="me-2" />
-              Server Online
-            </div>
-          )}
-          {serverStatus === 'offline' && (
-            <div className="server-status offline">
-              <FontAwesomeIcon icon={faServer} className="me-2" />
-              Server Offline
-            </div>
-          )}
+          <div className="logo-text">
+            <h1>CodeVeda</h1>
+            <span className="tagline">From Veda to Variables — Decoding Code with Vedic Precision</span>
+          </div>
         </div>
       </Navbar>
 
@@ -358,7 +331,7 @@ function App() {
             <Button 
               className="review-button"
               onClick={handleSubmit}
-              disabled={loading || !code.trim() || serverStatus === 'offline'}
+              disabled={loading || !code.trim()}
             >
               {loading ? (
                 <>

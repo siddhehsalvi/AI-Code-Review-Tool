@@ -1,12 +1,15 @@
-# AI Code Review Tool
+# CodeVeda
 
-A simple tool that uses AI to review code and provide feedback.
+### *From Veda to Variables — Perfecting Code*
+
+A powerful AI-driven code review tool that combines ancient wisdom with modern technology to perfect your code.
 
 ## Features
 
 - Paste code and get instant AI-powered feedback
 - Highlights issues and suggestions with different severity levels
 - Simple and intuitive interface
+- Supports multiple programming languages including JavaScript, Python, Java, and C++
 
 ## Project Structure
 
